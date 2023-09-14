@@ -22,7 +22,7 @@ spec:
     title: Navin Demo APIs
     description: Sample basic SCG + TAP Demos
     version: 0.0.1
-    groupID: tanzu-demo
+    groupID: navin-demo
     cors:
       allowedOrigins:
       - https://api-portal.a2.fynesy.net
