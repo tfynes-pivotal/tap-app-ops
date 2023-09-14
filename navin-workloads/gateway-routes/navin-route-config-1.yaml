@@ -1,0 +1,15 @@
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayRouteConfig
+metadata:
+  name: navin-gateway-route-1
+  namespace: navin
+spec:
+  service:
+    name: tdemo-navin-1
+  routes:
+  - predicates:
+      - Path=/tdemo-navin-1
+      - Method=GET
+    filters:
+      - StripPrefix=1
+      - PrefixPath=/

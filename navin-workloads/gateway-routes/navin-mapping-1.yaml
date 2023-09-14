@@ -1,0 +1,10 @@
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayMapping
+metadata:
+  name: navin-gateway-mapping-1
+  namespace: navin
+spec:
+  gatewayRef:
+    name: navin-gateway
+  routeConfigRef:
+    name: navin-gateway-route-1
