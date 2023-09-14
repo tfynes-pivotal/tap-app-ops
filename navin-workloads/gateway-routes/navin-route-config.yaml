@@ -8,7 +8,7 @@ spec:
     name: tdemo-navin
   routes:
   - predicates:
-      - Path=/tdemo1
+      - Path=/tdemo-navin
       - Method=GET
     filters:
       - StripPrefix=1
