@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: navin-gateway-cert
+  namespace: navin
+spec:
+  dnsNames:
+  - navin.a2.fynesy.net
+  secretName: navin-gateway-tls-cert
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer

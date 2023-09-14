@@ -1,0 +1,16 @@
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: navin-gateway
+  namespace: navin
+spec:
+  routes:
+  - conditions:
+    - prefix: /
+    services:
+    - name: navin-gateway
+      port: 80
+  virtualhost:
+    fqdn: navin.a2.fynesy.net
+    tls:
+      secretName: navin-gateway-tls-cert
