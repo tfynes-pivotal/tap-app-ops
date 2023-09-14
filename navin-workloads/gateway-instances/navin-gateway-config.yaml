@@ -20,7 +20,7 @@ spec:
   api:
     serverUrl: https://navin.a2.fynesy.net
     title: Navin Demo APIs
-    description: Sample basic SCG + TAP Demos
+    description: Sample TAP Demo
     version: 0.0.1
     groupID: navin-demo
     cors:
