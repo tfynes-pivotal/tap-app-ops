@@ -13,7 +13,7 @@ spec:
       autoscaling.knative.dev/minScale: "1"
   env:
     - name: message
-      value: | ****PDS supports Dentists & Team Members | Pacific Dental Services
+      value: " - PDS supports Dentists & Team Members | Pacific Dental Services"
   source:
     git:
       ref:
