@@ -4,8 +4,8 @@ metadata:
   labels:
     app.kubernetes.io/part-of: tdemo1
     apps.tanzu.vmware.com/workload-type: web
-  name: tdemo-sridhar
-  namespace: sridhar
+  name: tdemo-mc
+  namespace: default
 spec:
   params:
   - name: annotations
@@ -13,7 +13,7 @@ spec:
       autoscaling.knative.dev/minScale: "1"
   env:
     - name: message
-      value: sridhar
+      value: hello tanzu multicloud
   source:
     git:
       ref:
