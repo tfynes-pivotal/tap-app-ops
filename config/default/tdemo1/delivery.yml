@@ -2,7 +2,6 @@ apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   name: tdemo1
-  namespace: default
   annotations:
     ootb.apps.tanzu.vmware.com/servicebinding-workload: "true"
     ootb.apps.tanzu.vmware.com/apidescriptor-ref: "true"
