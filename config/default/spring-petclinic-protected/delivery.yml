@@ -1,0 +1,93 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: spring-petclinic-protected
+  annotations:
+    ootb.apps.tanzu.vmware.com/servicebinding-workload: "true"
+    ootb.apps.tanzu.vmware.com/apidescriptor-ref: "true"
+    kapp.k14s.io/change-rule: upsert after upserting servicebinding.io/ServiceBindings
+  labels:
+    app.kubernetes.io/part-of: petclinic
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/component: run
+    carto.run/workload-name: spring-petclinic-protected
+spec:
+  template:
+    metadata:
+      annotations:
+        apps.tanzu.vmware.com/correlationid: https://github.com/spring-projects/spring-petclinic?sub_path=/
+        autoscaling.knative.dev/min-scale: "1"
+        boot.spring.io/version: 3.2.0
+        conventions.carto.run/applied-conventions: |-
+          appliveview-sample/app-live-view-appflavour-check
+          spring-boot-convention/auto-configure-actuators-check
+          spring-boot-convention/spring-boot
+          spring-boot-convention/spring-boot-graceful-shutdown
+          spring-boot-convention/spring-boot-web
+          spring-boot-convention/spring-boot-actuator
+          spring-boot-convention/spring-boot-actuator-probes
+          spring-boot-convention/app-live-view-appflavour-check
+          spring-boot-convention/app-live-view-connector-boot
+          spring-boot-convention/app-live-view-appflavours-boot
+          spring-boot-convention/service-intent-postgres
+        developer.conventions/target-containers: workload
+        kapp.k14s.io/identity: v1;default/carto.run/Workload/spring-petclinic-protected;carto.run/v1alpha1
+        kapp.k14s.io/original: '{"apiVersion":"carto.run/v1alpha1","kind":"Workload","metadata":{"labels":{"app.kubernetes.io/part-of":"petclinic","apps.tanzu.vmware.com/workload-type":"web","kapp.k14s.io/app":"1702395642979738868","kapp.k14s.io/association":"v1.68eee833d738056a074ff8d8d005efdd"},"name":"spring-petclinic-protected","namespace":"default"},"spec":{"build":{"env":[{"name":"BP_GRADLE_BUILD_FILE","value":"skip"},{"name":"BP_JVM_VERSION","value":"17"}]},"env":[{"name":"SPRING_PROFILES_ACTIVE","value":"postgres"},{"name":"LOGGING_LEVEL_ORG_SPRINGFRAMEWORK","value":"TRACE"},{"name":"forward-headers-strategy","value":"FRAMEWORK"}],"params":[{"name":"annotations","value":{"autoscaling.knative.dev/min-scale":"1"}}],"serviceClaims":[{"name":"postgres1","ref":{"apiVersion":"services.apps.tanzu.vmware.com/v1alpha1","kind":"ClassClaim","name":"postgres1"}}],"source":{"git":{"ref":{"branch":"main"},"url":"https://github.com/spring-projects/spring-petclinic"}}}}'
+        kapp.k14s.io/original-diff-md5: c6e94dc94aed3401b5d0f26ed6c0bff3
+        services.conventions.carto.run/postgres: postgresql/42.6.0
+      labels:
+        app.kubernetes.io/component: run
+        app.kubernetes.io/part-of: petclinic
+        apps.tanzu.vmware.com/auto-configure-actuators: "false"
+        apps.tanzu.vmware.com/workload-type: web
+        carto.run/workload-name: spring-petclinic-protected
+        conventions.carto.run/framework: spring-boot
+        services.conventions.carto.run/postgres: workload
+        tanzu.app.live.view: "true"
+        tanzu.app.live.view.application.actuator.path: actuator
+        tanzu.app.live.view.application.actuator.port: "8080"
+        tanzu.app.live.view.application.flavours: spring-boot
+        tanzu.app.live.view.application.name: spring-petclinic-protected
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: postgres
+        - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK
+          value: TRACE
+        - name: forward-headers-strategy
+          value: FRAMEWORK
+        - name: JAVA_TOOL_OPTIONS
+          value: -Dmanagement.endpoint.health.probes.add-additional-paths="true" -Dmanagement.health.probes.enabled="true" -Dserver.port="8080" -Dserver.shutdown.grace-period="24s"
+        image: harbor.harborlab.fynesy.net/tap/spring-petclinic-protected-default@sha256:dcb96e3a91c6cd703c17f7d47cf2cc562043f4197d8877156c4e7fb0bdf4b1fa
+        livenessProbe:
+          httpGet:
+            path: /livez
+            port: 8080
+            scheme: HTTP
+        name: workload
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8080
+            scheme: HTTP
+        resources: {}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsNonRoot: true
+          runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault
+        startupProbe:
+          httpGet:
+            path: /readyz
+            port: 8080
+            scheme: HTTP
+      serviceAccountName: default
+
